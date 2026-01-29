@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import "./App.css";
-import { events, type EventItem } from "./data/events";
-import { useLocalStorage } from "./hooks/useLocalStorage";
+import { events, type EventItem } from "./data/events.ts";
+import { useLocalStorage } from "./hooks/useLocalStorage.ts";
 
 type FavoritesMap = Record<string, boolean>;
 
@@ -12,8 +12,8 @@ export default function App() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return events;
-    return events.filter(e =>
-      [e.title, e.tag, e.location, e.date].some(x => x.toLowerCase().includes(q))
+    return events.filter((e: EventItem) =>
+      [e.title, e.tag, e.location, e.date].some((x: string) => x.toLowerCase().includes(q))
     );
   }, [query]);
 
@@ -23,7 +23,7 @@ export default function App() {
   );
 
   function toggleFav(id: string) {
-    setFavorites(prev => ({ ...prev, [id]: !prev[id] }));
+    setFavorites((prev: FavoritesMap) => ({ ...prev, [id]: !prev[id] }));
   }
 
   return (
@@ -46,7 +46,7 @@ export default function App() {
       </header>
 
       <main className="grid">
-        {filtered.map((e) => (
+        {filtered.map((e: EventItem) => (
           <EventCard
             key={e.id}
             item={e}
